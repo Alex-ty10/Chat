@@ -1,9 +1,10 @@
 "use client"
 
-import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { useState, useEffect } from "react"
+import axios from "axios";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 
 import {
   Dialog,
@@ -12,7 +13,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -20,10 +21,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { FileUpload } from "@/components/file-upload"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { FileUpload } from "@/components/file-upload";
+import { useRouter } from "next/navigation";
 
 const formsSchema = z.object({
   name: z.string().min(1, {
@@ -36,6 +38,8 @@ const formsSchema = z.object({
 
 export const InitialModal = () => {
   const [isMounted, setIsMounted] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true)
@@ -52,7 +56,15 @@ export const InitialModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formsSchema>) => {
-    console.log(values);
+    try {
+      await axios.post("/api/servers", values);
+
+      form.reset();
+      router.refresh();
+      window.location.reload();
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   if(!isMounted) {
