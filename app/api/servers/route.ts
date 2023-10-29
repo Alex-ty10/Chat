@@ -3,9 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
-import { stat } from "fs";
 import { NextResponse } from "next/server";
-import { channel } from "diagnostics_channel";
 import { MemberRole } from "@prisma/client";
 
 export async function POST(req: Request) {
