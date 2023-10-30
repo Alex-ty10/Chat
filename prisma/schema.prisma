@@ -71,7 +71,7 @@ enum ChannelType {
 }
 
 model Channel {
-  id String @id @ default(uuid())
+  id String @id @default(uuid())
   name String
   type ChannelType @default(TEXT)
 
